@@ -1,5 +1,4 @@
 package com.example.dao_level.repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,11 +16,15 @@ import java.util.stream.Collectors;
 @Repository
 public class Orders {
 
+    private String scriptSubject;
     private final String SCRIPTNAME = "FetchProductNames.sql";
-
-    @Autowired
     private NamedParameterJdbcTemplate namedParameterJDBCTemplate;
 
+
+    Orders(NamedParameterJdbcTemplate namedParameterJDBCTemplate) {
+        this.namedParameterJDBCTemplate = namedParameterJDBCTemplate;
+        this.scriptSubject = read(SCRIPTNAME);
+    }
 
     private static String read(String scriptFileName){ //Чтение скрипта
         try (InputStream is = new ClassPathResource(scriptFileName).getInputStream();
@@ -33,11 +36,9 @@ public class Orders {
     }
 
     public List<String> getProductName(String name){ //Извлечение данных из БД
-        String scriptSubject = read(SCRIPTNAME);
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        List<String> product_name =  namedParameterJDBCTemplate.queryForList(scriptSubject, paramMap, String.class);
-        return product_name;
+        return namedParameterJDBCTemplate.queryForList(scriptSubject, paramMap, String.class);
     }
 
 }
