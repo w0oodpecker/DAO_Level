@@ -1,0 +1,12 @@
+###
+GET http://localhost:8080/products/fetch-product?name=Иван
+
+###
+GET http://localhost:8080/products/fetch-product?name=Петр
+
+
+###
+GET http://localhost:8080/products/fetch-product?name=Сидор
+
+###
+GET http://localhost:8080/products/fetch-product?name=Николай
